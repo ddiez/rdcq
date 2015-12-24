@@ -36,9 +36,6 @@ d <- melt(m, varnames = c("sample", "celltype"))
 
 qplot(c(tmp$sd))
 
-###
-library(shiny)
-
 
 #######
 ## trick!

@@ -37,7 +37,7 @@ y <- y[rownames(x),] # reorder
 
 ## do all.
 res <- lapply(1:ncol(y), function(k) {
-  fit2 <- glmnet(x, y[,k], family = c('gaussian'), alpha = .05, nlambda = 100, lambda.min = .2)
+  fit2 <- glmnet(x, y[,k], family = c('gaussian'), alpha = .05, nlambda = 100, lambda.min.ratio = .2)
   fit2$beta[,100]
 })
 res <- do.call(rbind, res)
