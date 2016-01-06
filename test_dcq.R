@@ -1,11 +1,11 @@
 library(glmnet)
 
-db <- read.table("CellSurfaceMarkersDict.txt", stringsAsFactors = FALSE)
+db <- read.table("data/CellSurfaceMarkersDict.txt", stringsAsFactors = FALSE)
 #head(db)
 rownames(db) <- db[,2]
 #head(db)
 
-x <- read.delim("immgenGeneExpressionData.txt", stringsAsFactors = FALSE, check.names = FALSE)
+x <- read.delim("data/immgenGeneExpressionData.txt", stringsAsFactors = FALSE, check.names = FALSE)
 #head(x)
 x <- x[x[,1] %in% db[,1], ]
 rownames(x) <- x[,1]
@@ -16,7 +16,7 @@ x <- as.matrix(x[,-1])
 x <- x[order(rownames(x)), order(colnames(x))]
 #x[1:10,1:10]
 
-y <- read.delim("LungDataSet.txt", check.names = FALSE)
+y <- read.delim("data/LungDataSet.txt", check.names = FALSE)
 #head(y)
 library(limma)
 y <- avereps(y[,-1], ID = y[,1])
