@@ -63,7 +63,7 @@ img {
 <div id="header">
 <h1 class="title">test_dcq.R</h1>
 <h4 class="author"><em>diez</em></h4>
-<h4 class="date"><em>Thu Dec 17 20:08:56 2015</em></h4>
+<h4 class="date"><em>Wed Jan 6 12:47:18 2016</em></h4>
 </div>
 
 
@@ -78,12 +78,12 @@ img {
 ## 
 ## Loading required package: foreach
 ## Loaded glmnet 2.0-2</code></pre>
-<pre class="r"><code>db &lt;- read.table(&quot;CellSurfaceMarkersDict.txt&quot;, stringsAsFactors = FALSE)
+<pre class="r"><code>db &lt;- read.table(&quot;data/CellSurfaceMarkersDict.txt&quot;, stringsAsFactors = FALSE)
 #head(db)
 rownames(db) &lt;- db[,2]
 #head(db)
 
-x &lt;- read.delim(&quot;immgenGeneExpressionData.txt&quot;, stringsAsFactors = FALSE, check.names = FALSE)
+x &lt;- read.delim(&quot;data/immgenGeneExpressionData.txt&quot;, stringsAsFactors = FALSE, check.names = FALSE)
 #head(x)
 x &lt;- x[x[,1] %in% db[,1], ]
 rownames(x) &lt;- x[,1]
@@ -94,7 +94,7 @@ x &lt;- as.matrix(x[,-1])
 x &lt;- x[order(rownames(x)), order(colnames(x))]
 #x[1:10,1:10]
 
-y &lt;- read.delim(&quot;LungDataSet.txt&quot;, check.names = FALSE)
+y &lt;- read.delim(&quot;data/LungDataSet.txt&quot;, check.names = FALSE)
 #head(y)
 library(limma)
 y &lt;- avereps(y[,-1], ID = y[,1])
@@ -115,7 +115,7 @@ y &lt;- y[rownames(x),] # reorder
 
 ## do all.
 res &lt;- lapply(1:ncol(y), function(k) {
-  fit2 &lt;- glmnet(x, y[,k], family = c('gaussian'), alpha = .05, nlambda = 100, lambda.min = .2)
+  fit2 &lt;- glmnet(x, y[,k], family = c('gaussian'), alpha = .05, nlambda = 100, lambda.min.ratio = .2)
   fit2$beta[,100]
 })
 res &lt;- do.call(rbind, res)
