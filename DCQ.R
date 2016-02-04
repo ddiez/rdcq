@@ -1,10 +1,13 @@
+library(readr)
+
 markers <- read.table("data/CellSurfaceMarkersDict.txt", stringsAsFactors = FALSE)
 rownames(markers) <- markers[,2]
 
-db <- read.delim("data/immgenGeneExpressionData.txt", stringsAsFactors = FALSE, check.names = FALSE)
-db <- db[db[,1] %in% markers[,1], ]
-rownames(db) <- db[,1]
-db <- as.matrix(db[,-1])
+#db <- read.delim("data/immgenGeneExpressionData.txt", stringsAsFactors = FALSE, check.names = FALSE)
+tmp <- read_delim(file = "data/immgenGeneExpressionData.txt", delim = "\t", escape_double = FALSE)
+tmp <- tmp[tmp[,1] %>% unlist %in% markers[,1], ]
+db <- as.matrix(tmp[,-1])
+rownames(db) <- tmp[,1] %>% unlist
 db <- db[order(rownames(db)), order(colnames(db))]
 
 DCQ <- function(x, db = db, alpha = 0.05, lambda.min.ratio = .2, nlambda = 100) {
@@ -29,7 +32,7 @@ DCQ2 <- function(x, db = db, size = ncol(db)/2, N = 10) {
     res[rownames(tmp2),colnames(tmp2)] <- tmp2
     res
   })
-  mean <- apply(simplify2array(.list), c(1,2), mean, na.rm=TRUE)
-  sd <- apply(simplify2array(.list), c(1,2), sd, na.rm=TRUE)
+  mean <- apply(simplify2array(.list), c(1, 2), mean, na.rm = TRUE)
+  sd <- apply(simplify2array(.list), c(1, 2), sd, na.rm = TRUE)
   list(mean = mean, sd = sd)
 }

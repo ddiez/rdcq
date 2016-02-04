@@ -1,5 +1,7 @@
 ###
 library(shiny)
+library(readr)
+
 ui <- shinyUI({
   pageWithSidebar(
     headerPanel(title = "DCQ: Digital Cell Quantifier"),
@@ -62,20 +64,28 @@ server <- shinyServer(function(input, output, server) {
   library(limma)
   library(plotly)
 
-    file <- reactive({
-    if(! is.null(input$file$name)) {
-      x <- read.delim(input$file$datapath, check.names = FALSE)
-      x <- avereps(x[,-1], ID = x[,1])
-      x <- x[rownames(x) %in% markers[,2],]
-      rownames(x) <- markers[rownames(x),1]
+  file <- reactive({
+    if (!is.null(input$file$name)) {
+      #x <- read.delim(input$file$datapath, check.names = FALSE)
+      x <- read_delim(file = input$file$datapath, delim = "\t", escape_double = FALSE)
+      x <- avereps(x[, -1], ID = x[, 1] %>% unlist)
+      x <- x[rownames(x) %in% markers[, 2], ]
+      rownames(x) <- markers[rownames(x), 1]
       return(x)
     }
   })
   
   dcq <- reactive({
     x <- file()
-    if(!is.null(x)) {
-      tmp <- DCQ(x, db = db, alpha = input$alpha, lambda.min.ratio = input$lambda.min.ratio, nlambda = input$nlambda)
+    if (!is.null(x)) {
+      tmp <-
+        DCQ(
+          x,
+          db = db,
+          alpha = input$alpha,
+          lambda.min.ratio = input$lambda.min.ratio,
+          nlambda = input$nlambda
+        )
       return(melt(tmp, varnames = c("sample", "celltype")))
     }
   })
