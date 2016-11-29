@@ -13,26 +13,24 @@ ui <- shinyUI({
     headerPanel(title = "DCQ: Digital Cell Quantifier"),
     sidebarPanel(
       fileInput("file",
-                "file:"
+                "file:"),
+      sliderInput(
+        "alpha",
+        "alpha:",
+        min = 0,
+        max = 1,
+        value = 0.05,
+        step = 0.01
       ),
-      sliderInput("alpha",
-                  "alpha:",
-                  min = 0,
-                  max = 1,
-                  value = 0.05,
-                  step = 0.01
+      sliderInput(
+        "lambda.min.ratio",
+        "lambda.min.ratio:",
+        min = 0,
+        max = 1,
+        value = 0.2,
+        step = 0.01
       ),
-      sliderInput("lambda.min.ratio",
-                  "lambda.min.ratio:",
-                  min = 0,
-                  max = 1,
-                  value = 0.2,
-                  step = 0.01
-      ),
-      textInput("nlambda",
-                "nlambda",
-                value = 100
-                )
+      textInput("nlambda", "nlambda", value = 100)
     ),
     mainPanel(tabsetPanel(
       tabPanel(
@@ -63,7 +61,7 @@ server <- shinyServer(function(input, output, server) {
           escape_double = FALSE
         )
       x <- avereps(x[, -1], ID = x[, 1] %>% unlist)
-      x <- x[rownames(x) %in% markers[, 2],]
+      x <- x[rownames(x) %in% markers[, 2], ]
       rownames(x) <- markers[rownames(x), 1]
       values$data <- x
     }
@@ -82,7 +80,7 @@ server <- shinyServer(function(input, output, server) {
   
   filter <- reactive({
     d <- dcq()
-    if(!is.null(d))
+    if (!is.null(d))
       d %>% dplyr::filter(grepl(input$filter, celltype, ignore.case = TRUE))
   })
   
@@ -90,30 +88,45 @@ server <- shinyServer(function(input, output, server) {
     d <- filter()
     if (!is.null(d)) {
       p <-
-        ggplot(d, aes(x = sample, y = celltype, fill = value)) + 
-        geom_tile() + 
+        ggplot(d, aes(x = sample, y = celltype, fill = value)) +
+        geom_tile() +
         scale_fill_gradient2(
           low = "seagreen",
           mid = "white",
           high = "purple4",
           midpoint = 0,
           limit = c(-.12, .12)
-        ) + 
-        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5))
+        ) +
+        theme(axis.text.x = element_text(
+          angle = 90,
+          hjust = 1,
+          vjust = .5
+        ))
       ggplotly(p)
     }
+    
   })
   
   output$markers <- renderDataTable(markers)
   
   output$expression <- renderPlotly({
     if (!is.null(dbd)) {
-      p <- ggplot(dbd, aes(x = celltype, y = marker, fill = value)) + 
-        geom_tile() + 
-        scale_fill_gradient2(low = "blue", mid = "yellow", high = "red", midpoint = 4) + 
-        theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5))
-      ggplotly(p) 
+      p <- ggplot(dbd, aes(x = celltype, y = marker, fill = value)) +
+        geom_tile() +
+        scale_fill_gradient2(
+          low = "blue",
+          mid = "yellow",
+          high = "red",
+          midpoint = 4
+        ) +
+        theme(axis.text.x = element_text(
+          angle = 90,
+          hjust = 1,
+          vjust = .5
+        ))
+      ggplotly(p)
     }
   })
 })
+
 shinyApp(ui = ui, server = server)
