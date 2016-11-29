@@ -24,13 +24,13 @@ dcq <- function(x, db = db, alpha = 0.05, lambda.min.ratio = .2, nlambda = 100) 
   res
 }
 
-DCQ2 <- function(x, db = db, size = ncol(db)/2, N = 10) {
+dcq2 <- function(x, db = db, size = ncol(db)/2, N = 10) {
   res <- matrix(NA, ncol = ncol(db), nrow = ncol(x))
   rownames(res) <- colnames(x)
   colnames(res) <- colnames(db)
   .list <- lapply(1:N, function(n) {
     tmp <- db[,sample(ncol(db), size)]
-    tmp2 <- DCQ(x, tmp)
+    tmp2 <- dcq(x, tmp)
     res[rownames(tmp2),colnames(tmp2)] <- tmp2
     res
   })
