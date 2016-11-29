@@ -1,0 +1,15 @@
+Package: DCQ
+Title: A Shiny Interface to DCQ and Friends
+Version: 0.0.1
+Authors@R: person("Diego", "Diez", email = "diego10ruiz@gmail.com", role = c("aut", "cre"))
+Description: This package implements function to determine the cell composition
+    \ from a set of microarray experimental data. It implements the Digital Cell \
+    Quantifier (DCQ) method and similar methods.
+Depends:
+    R (>= 3.3.2)
+Imports:
+    glmnet
+License: MIT
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 5.0.1
