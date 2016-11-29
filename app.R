@@ -1,6 +1,11 @@
 ###
 library(shiny)
 library(readr)
+library(dplyr)
+library(reshape2)
+library(glmnet)
+library(limma)
+source("DCQ.R")
 
 ui <- shinyUI({
   pageWithSidebar(
@@ -59,10 +64,7 @@ ui <- shinyUI({
   )
 })
 server <- shinyServer(function(input, output, server) {
-  source("DCQ.R")
   dbd <- melt(db, varnames = c("marker", "celltype"))
-  library(limma)
-  library(plotly)
 
   file <- reactive({
     if (!is.null(input$file$name)) {
