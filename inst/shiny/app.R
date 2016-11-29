@@ -34,17 +34,13 @@ ui <- shinyUI({
       textInput("nlambda", "nlambda", value = 100)
     ),
     mainPanel(tabsetPanel(
-      tabPanel(
-        title = "Cell quantification",
-        textInput("filter",
-                  label = "Filter:",
-                  value = ""),
-        plotlyOutput("cells")
-      ),
+      tabPanel(title = "Cell quantification",
+               textInput("filter", label = "Filter:", value = ""),
+               plotlyOutput("cells", height = "800px")),
       tabPanel(title = "Markers",
                dataTableOutput("markers")),
       tabPanel(title = "Expression",
-               plotlyOutput("expression"))
+               plotlyOutput("expression", height = "800px"))
     ))
   )
 })
