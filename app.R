@@ -51,31 +51,33 @@ ui <- shinyUI({
 })
 server <- shinyServer(function(input, output, server) {
   dbd <- melt(db, varnames = c("marker", "celltype"))
-
-  file <- reactive({
+  
+  values <- reactiveValues(data = NULL)
+  
+  observe({
     if (!is.null(input$file$name)) {
-      #x <- read.delim(input$file$datapath, check.names = FALSE)
-      x <- read_delim(file = input$file$datapath, delim = "\t", escape_double = FALSE)
+      x <-
+        read_delim(
+          file = input$file$datapath,
+          delim = "\t",
+          escape_double = FALSE
+        )
       x <- avereps(x[, -1], ID = x[, 1] %>% unlist)
-      x <- x[rownames(x) %in% markers[, 2], ]
+      x <- x[rownames(x) %in% markers[, 2],]
       rownames(x) <- markers[rownames(x), 1]
-      return(x)
+      values$data <- x
     }
   })
   
-  dcq <- reactive({
-    x <- file()
-    if (!is.null(x)) {
-      tmp <-
-        DCQ(
-          x,
-          db = db,
-          alpha = input$alpha,
-          lambda.min.ratio = input$lambda.min.ratio,
-          nlambda = input$nlambda
-        )
-      return(melt(tmp, varnames = c("sample", "celltype")))
-    }
+  dcq <- eventReactive(values$data, {
+    tmp <- DCQ(
+      values$data,
+      db = db,
+      alpha = input$alpha,
+      lambda.min.ratio = input$lambda.min.ratio,
+      nlambda = input$nlambda
+    )
+    return(melt(tmp, varnames = c("sample", "celltype")))
   })
   
   filter <- reactive({
