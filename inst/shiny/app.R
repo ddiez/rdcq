@@ -45,38 +45,33 @@ ui <- shinyUI({
   )
 })
 server <- shinyServer(function(input, output, server) {
-  values <- reactiveValues(data = NULL)
+  values <- reactiveValues(data = NULL, dcq = NULL)
 
-  observe({
-    if (!is.null(input$file$name)) {
-      x <-
-        readr::read_delim(
-          file = input$file$datapath,
-          delim = "\t",
-          escape_double = FALSE
-        )
-      x <- limma::avereps(x[, -1], ID = x[, 1] %>% unlist)
-      x <- x[rownames(x) %in% markers[, 2], ]
-      rownames(x) <- markers[rownames(x), 1]
-      values$data <- x
-    }
+  observeEvent(input$file$datapath, {
+    x <- readr::read_delim(
+      file = input$file$datapath,
+      delim = "\t",
+      escape_double = FALSE
+    )
+    x <- limma::avereps(x[, -1], ID = x[, 1] %>% unlist)
+    x <- x[rownames(x) %in% markers[, 2], ]
+    rownames(x) <- markers[rownames(x), 1]
+    values$data <- x
   })
 
-  dcq <- eventReactive(values$data, {
-    tmp <- DCQ(
+  observeEvent(values$data, {
+    tmp <- dcq(
       values$data,
       db = db,
       alpha = input$alpha,
       lambda.min.ratio = input$lambda.min.ratio,
       nlambda = input$nlambda
     )
-    return(reshape2::melt(tmp, varnames = c("sample", "celltype")))
+    values$dcq <- reshape2::melt(tmp, varnames = c("sample", "celltype"))
   })
 
-  filter <- reactive({
-    d <- dcq()
-    if (!is.null(d))
-      d %>% dplyr::filter(grepl(input$filter, celltype, ignore.case = TRUE))
+  filter <- eventReactive(values$dcq, {
+    values$dcq %>% dplyr::filter(grepl(input$filter, celltype, ignore.case = TRUE))
   })
 
   output$cells <- renderPlotly({
