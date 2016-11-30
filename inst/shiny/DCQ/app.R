@@ -7,8 +7,6 @@ library(ggplot2)
 library(plotly)
 library(DCQ)
 
-dbd <- reshape2::melt(db, varnames = c("marker", "celltype"))
-
 ui <- shinyUI({
   pageWithSidebar(
     headerPanel(title = "DCQ: Digital Cell Quantifier"),
@@ -100,22 +98,20 @@ server <- shinyServer(function(input, output, server) {
   output$markers <- renderDataTable(markers)
 
   output$expression <- renderPlotly({
-    if (!is.null(dbd)) {
-      p <- ggplot(dbd, aes(x = celltype, y = marker, fill = value)) +
-        geom_tile() +
-        scale_fill_gradient2(
-          low = "blue",
-          mid = "yellow",
-          high = "red",
-          midpoint = 4
-        ) +
-        theme(axis.text.x = element_text(
-          angle = 90,
-          hjust = 1,
-          vjust = .5
-        ))
-      plotly::ggplotly(p)
-    }
+    p <- ggplot(db_tidy, aes(x = celltype, y = marker, fill = value)) +
+      geom_tile() +
+      scale_fill_gradient2(
+        low = "blue",
+        mid = "yellow",
+        high = "red",
+        midpoint = 4
+      ) +
+      theme(axis.text.x = element_text(
+        angle = 90,
+        hjust = 1,
+        vjust = .5
+      ))
+    plotly::ggplotly(p)
   })
 })
 
