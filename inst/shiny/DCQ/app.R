@@ -68,8 +68,9 @@ server <- shinyServer(function(input, output, server) {
     values$dcq <- reshape2::melt(tmp, varnames = c("sample", "celltype"))
   })
 
-  filter <- eventReactive(values$dcq, {
-    values$dcq %>% dplyr::filter(grepl(input$filter, celltype, ignore.case = TRUE))
+  filter <- reactive({
+    if (!is.null(values$dcq))
+      values$dcq %>% dplyr::filter(grepl(input$filter, celltype, ignore.case = TRUE))
   })
 
   output$cells <- renderPlotly({
