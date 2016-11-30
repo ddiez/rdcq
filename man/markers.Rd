@@ -8,10 +8,9 @@
 \describe{
   \item{human}{immune-related markers, human name.}
   \item{mouse}{immune-related markers, mouse name.}
-  ...
 }}
 \source{
-\url{http://www.diamondse.info/}
+\url{http://dcq.tau.ac.il}
 }
 \usage{
 markers
