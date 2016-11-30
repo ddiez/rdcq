@@ -7,4 +7,5 @@
 #' @docType package
 #'
 #' @importFrom glmnet glmnet
+#' @importFrom shiny runApp
 NULL
