@@ -100,7 +100,7 @@ server <- shinyServer(function(input, output, server) {
       geom_tile() +
       scale_fill_gradient2(
         low = "blue",
-        mid = "yellow",
+        mid = "white",
         high = "red",
         midpoint = 4
       ) +
