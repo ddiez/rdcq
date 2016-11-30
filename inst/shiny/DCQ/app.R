@@ -75,8 +75,7 @@ server <- shinyServer(function(input, output, server) {
   output$cells <- renderPlotly({
     d <- filter()
     if (!is.null(d)) {
-      p <-
-        ggplot(d, aes(x = sample, y = celltype, fill = value)) +
+      ggplot(d, aes(x = sample, y = celltype, fill = value)) +
         geom_tile() +
         scale_fill_gradient2(
           low = "seagreen",
@@ -90,15 +89,13 @@ server <- shinyServer(function(input, output, server) {
           hjust = 1,
           vjust = .5
         ))
-      plotly::ggplotly(p)
-    }
-
+    } else ggplot() + theme_void()
   })
 
   output$markers <- renderDataTable(markers)
 
   output$expression <- renderPlotly({
-    p <- ggplot(db_tidy, aes(x = celltype, y = marker, fill = value)) +
+    ggplot(db_tidy, aes(x = celltype, y = marker, fill = expression)) +
       geom_tile() +
       scale_fill_gradient2(
         low = "blue",
@@ -111,7 +108,6 @@ server <- shinyServer(function(input, output, server) {
         hjust = 1,
         vjust = .5
       ))
-    plotly::ggplotly(p)
   })
 })
 
