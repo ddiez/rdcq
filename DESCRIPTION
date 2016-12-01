@@ -1,4 +1,4 @@
-Package: DCQ
+Package: rdcq
 Title: A Shiny Interface to DCQ and Friends
 Version: 0.0.1
 Authors@R: person("Diego", "Diez", email = "diego10ruiz@gmail.com", role = c("aut", "cre"))

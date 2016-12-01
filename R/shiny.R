@@ -6,5 +6,5 @@
 #' @export
 #'
 dcqUI <- function() {
-  runApp(system.file("shiny", "DCQ", "app.R", package = "DCQ"))
+  runApp(system.file("shiny", "rdcq", "app.R", package = "rdcq"))
 }

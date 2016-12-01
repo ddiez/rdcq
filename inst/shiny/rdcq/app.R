@@ -5,7 +5,7 @@ library(reshape2)
 library(limma)
 library(ggplot2)
 library(plotly)
-library(DCQ)
+library(rdcq)
 
 ui <- shinyUI({
   pageWithSidebar(
