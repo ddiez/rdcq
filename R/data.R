@@ -27,7 +27,7 @@
 #' A dataset containing the expression level selected immune markers in 217 cell
 #' types from the Immunology Genome Project (Immgen).
 #'
-#' @format A data frame with 61 rows and 217 variables:
+#' @format A data frame with 13237 rows and 3 variables:
 #' \describe{
 #'   \item{marker}{immune-related markers, human name.}
 #'   \item{celltype}{cell type from the Immgen project.}
