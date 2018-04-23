@@ -46,12 +46,20 @@ server <- shinyServer(function(input, output, server) {
   values <- reactiveValues(data = NULL, dcq = NULL)
 
   observeEvent(input$file$datapath, {
-    x <- readr::read_delim(
-      file = input$file$datapath,
-      delim = "\t",
-      escape_double = FALSE
-    )
-    x <- limma::avereps(x[, -1], ID = x[, 1] %>% unlist)
+    f <- input$file$datapath
+
+    if (tools::file_ext(f) == "rds") {
+      x <- read_rds(f)
+      x <- exprs(x)
+    } else {
+      x <- readr::read_delim(
+        file = f,
+        delim = "\t",
+        escape_double = FALSE
+      )
+      x <- limma::avereps(x[, -1], ID = x[, 1] %>% unlist)
+    }
+
     x <- x[rownames(x) %in% markers[, 2], ]
     rownames(x) <- markers[rownames(x), 1]
     values$data <- x
