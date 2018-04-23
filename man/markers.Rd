@@ -20,4 +20,3 @@ A dataset containing a list of immune markers in human and mouse, used by
 dcq method to infer the cell composition from RNA expression levels.
 }
 \keyword{datasets}
-

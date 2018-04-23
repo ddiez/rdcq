@@ -2,10 +2,9 @@
 % Please edit documentation in R/help.R
 \docType{package}
 \name{rdcq-package}
-\alias{rdcq}
 \alias{rdcq-package}
+\alias{rdcq}
 \title{rdcq}
 \description{
 A Shiny Interface to DCQ and Friends
 }
-

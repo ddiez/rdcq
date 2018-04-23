@@ -16,4 +16,3 @@ A dataset containing the expression level selected immune markers in 217 cell
 types from the Immunology Genome Project (Immgen).
 }
 \keyword{datasets}
-
