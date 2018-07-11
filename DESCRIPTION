@@ -6,7 +6,7 @@ Description: This package implements function to determine the cell composition
     \ from a set of microarray experimental data. It implements the Digital Cell \
     Quantifier (DCQ) method and similar methods.
 Depends:
-    R (>= 3.3.2)
+    R (>= 3.3)
 Imports:
     glmnet,
     shiny
