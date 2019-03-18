@@ -14,7 +14,7 @@
 #' @examples
 #' NULL
 dcq <- function(x, db = db, alpha = 0.05, lambda.min.ratio = .2, nlambda = 100) {
-  x <- x[rownames(db),] # reorder
+  x <- x[toupper(rownames(x)) %in% rownames(db), ]
   res <- lapply(1:ncol(x), function(k) {
     fit2 <- glmnet(db, x[,k], family = c('gaussian'), alpha = alpha, nlambda = nlambda, lambda.min.ratio = lambda.min.ratio)
     fit2$beta[,100]
