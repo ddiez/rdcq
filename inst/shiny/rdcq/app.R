@@ -90,8 +90,7 @@ server <- shinyServer(function(input, output, server) {
           low = "seagreen",
           mid = "white",
           high = "purple4",
-          midpoint = 0,
-          limit = c(-.12, .12)
+          midpoint = 0
         ) +
         theme(axis.text.x = element_text(
           angle = 90,
