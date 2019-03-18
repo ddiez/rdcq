@@ -83,8 +83,13 @@ server <- shinyServer(function(input, output, server) {
 
   output$cells <- renderPlotly({
     d <- filter()
-    if (!is.null(d)) {
-      ggplot(d, aes(x = sample, y = celltype, fill = value)) +
+
+    validate(
+      need(!is.null(d), "Load some dataset"),
+      need(nrow(d) > 0, "Change filter")
+    )
+
+    ggplot(d, aes(x = sample, y = celltype, fill = value)) +
         geom_tile() +
         scale_fill_gradient2(
           low = "seagreen",
@@ -97,7 +102,6 @@ server <- shinyServer(function(input, output, server) {
           hjust = 1,
           vjust = .5
         ))
-    } else ggplot() + theme_void()
   })
 
   output$markers <- renderDataTable(markers)
