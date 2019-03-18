@@ -1,6 +1,6 @@
 Package: rdcq
 Title: A Shiny Interface to DCQ and Friends
-Version: 0.0.1
+Version: 0.0.2
 Authors@R: person("Diego", "Diez", email = "diego10ruiz@gmail.com", role = c("aut", "cre"))
 Description: This package implements function to determine the cell composition
     \ from a set of microarray experimental data. It implements the Digital Cell \
