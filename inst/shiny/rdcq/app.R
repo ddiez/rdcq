@@ -106,11 +106,9 @@ server <- shinyServer(function(input, output, server) {
   output$expression <- renderPlotly({
     ggplot(db_tidy, aes(x = celltype, y = marker, fill = expression)) +
       geom_tile() +
-      scale_fill_gradient2(
-        low = "blue",
-        mid = "white",
-        high = "red",
-        midpoint = 4
+      scale_fill_gradient(
+        low = "white",
+        high = "red"
       ) +
       theme(axis.text.x = element_text(
         angle = 90,
